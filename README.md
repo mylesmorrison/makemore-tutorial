@@ -1,0 +1,1 @@
+I am trying to learn how LLM's work so I decided to follow Andrej Karpathy tutorial on makemore.

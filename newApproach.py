@@ -35,7 +35,6 @@ for k in range(1000):
     logits = xenc @ W 
     counts = logits.exp()
     probs = counts / counts.sum(1, keepdims=True)
-
     loss = -probs[torch.arange(num), ys].log().mean()
     print(loss.item())
 
@@ -45,4 +44,4 @@ for k in range(1000):
 
 
     #update
-    W.data += -0.1 * W.grad
+    W.data += -50 * W.grad
