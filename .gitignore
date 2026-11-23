@@ -1,0 +1,7 @@
+.venv/
+.venv.nosync/
+__pycache__/
+*.pyc
+.DS_Store
+tempCodeRunnerFile.py
+.ipynb_checkpoints/
