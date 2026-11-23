@@ -29,14 +29,14 @@ ys = torch.tensor(ys)
 g = torch.Generator().manual_seed(2147483647)
 W = torch.randn((27, 27), generator=g, requires_grad=True)
 #gradient descent
-for k in range(1000):
+for k in range(100):
     #forward pass
     xenc = F.one_hot(xs, num_classes=27).float()
     logits = xenc @ W 
     counts = logits.exp()
     probs = counts / counts.sum(1, keepdims=True)
-    loss = -probs[torch.arange(num), ys].log().mean()
-    print(loss.item())
+    loss = -probs[torch.arange(num), ys].log().mean() + 0.01*(W**2).mean()
+    #print(loss.item())
 
     #backward pass 
     W.grad = None # set to 0 
@@ -45,3 +45,22 @@ for k in range(1000):
 
     #update
     W.data += -50 * W.grad
+
+
+#sample from neural net model
+g = torch.Generator().manual_seed(2147483647)
+
+for i in range(5):
+    out = []
+    ix = 0
+    while True: 
+        xenc = F.one_hot(torch.tensor([ix]), num_classes = 27).float()
+        logits = xenc @ W 
+        counts = logits.exp()
+        p = counts / counts.sum(1, keepdim=True)
+
+        ix = torch.multinomial(p, num_samples=1, replacement=True, generator=g).item()
+        out.append(itos[ix])
+        if ix == 0:
+            break
+    print(''.join(out))
